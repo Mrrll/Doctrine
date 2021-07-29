@@ -118,4 +118,9 @@ class Bug
     {
         return $this->status;
     }
+    // *: Cerrar un error ...
+    public function close()
+    {
+        $this->status = "CLOSE";
+    }
 }
