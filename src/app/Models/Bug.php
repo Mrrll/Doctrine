@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity(repositoryClass="BugRepository")
  * @ORM\Table(name="bugs")
@@ -33,6 +33,14 @@ class Bug
      * @var string
      */
     protected $status;
+
+    // *: Agregaremos propiedades que almacenarán objetos de tipos de entidad específicos para modelar las relaciones entre diferentes entidades ...
+    protected $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId()
     {

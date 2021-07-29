@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
@@ -21,6 +21,15 @@ class User
      * @var string
      */
     protected $name;
+    // *: Agregaremos propiedades que almacenarán objetos de tipos de entidad específicos para modelar las relaciones entre diferentes entidades ...
+    protected $reportedBugs;
+    protected $assignedBugs;
+
+    public function __construct()
+    {
+        $this->reportedBugs = new ArrayCollection();
+        $this->assignedBugs = new ArrayCollection();
+    }
 
     public function getId()
     {
