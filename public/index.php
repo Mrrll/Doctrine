@@ -5,14 +5,14 @@ use Doctrine\ORM\EntityManager;
 use Dotenv\Dotenv;
 require_once __DIR__ . '/../vendor/autoload.php';
 Dotenv::createImmutable(__DIR__ . '/../')->load();
-
 // Create a simple "default" Doctrine ORM configuration for Annotations
+$paths = array(realpath(__DIR__ . '/../src/app/Models'));
 $isDevMode = true;
 $proxyDir = null;
 $cache = null;
 $useSimpleAnnotationReader = false;
 $config = Setup::createAnnotationMetadataConfiguration(
-    [realpath(__DIR__ . '/../src/Models')],
+    $paths,
     $isDevMode,
     $proxyDir,
     $cache,
