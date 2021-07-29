@@ -105,119 +105,35 @@ Se a modificado la configuración del `entityManager` que se declaraba en el `./
 >Acontinuación se a creado el archivo `create_product.php` en `./public` y hemos copiado la parte del codigo que habia en el `./public/index.php` antes de su eliminacion.
 >Con el siguiente codigo:
 
-```php
-<?php
-// TODO: Archivo de creación del producto ...
-
-use App\Models\Product;
-require_once __DIR__ . "/../config/bootstrap.php";
-// *: Creamos la Entidad Productos ...
-$newProductName = "Producto2";
-$product = new Product();
-$product->setName($newProductName);
-// *: Almacenamos los datos ...
-$entityManager->persist($product);
-$entityManager->flush();
-
-echo "Created Product with ID " . $product->getId() . "\n";
-
-```
+>El archivo `create_product.php` en `./public` Creamos la Entidad Productos:
 
 **`Nota:`
 Otro cambio a la hora de ejecutar los scripts con este cambio los resultado los mostraremos por la terminal ...**
 
 ## Ejecución ...
->Abra la terminal y tipeé :
-```console
-cd public
-```
-> Y despues:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
 ```console
 php create_product.php ORM
 ```
->Acontinuación se a creado el archivo `list_products.php` en `./public` y hemos añadido el siguiente codigo:
+>El archivo `list_products.php` en `./public`  Buscaremos una lista de todos los Productos en la base de datos:
 
-```php
-<?php
-// TODO: Archivo de listar los productos ...
-
-use App\Models\Product;
-require_once __DIR__ . "/../config/bootstrap.php";
-// *: Buscaremos una lista de todos los Productos en la base de datos ...
-$productRepository = $entityManager->getRepository(Product::class); // ?: Puede crear un objeto buscador (llamado repositorio) para cada tipo de entidad.
-$products = $productRepository->findAll();
-
-foreach ($products as $product) {
-    echo sprintf("-%s\n", $product->getName());
-}
-```
 ## Ejecución ...
->Abra la terminal y tipeé :
-```console
-cd public
-```
-> Y despues:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
 ```console
 php list_products.php ORM
 ```
->Acontinuación se a creado el archivo `show_product.php` en `./public` y hemos añadido el siguiente codigo:
+>El archivo `show_product.php` en `./public` Mostrar el nombre de un producto en función de su ID:
 
-```php
-<?php
-// TODO: Archivo que muestra los productos por <id> ...
-
-use App\Models\Product;
-require_once __DIR__ . "/../config/bootstrap.php";
-// *: Mostrar el nombre de un producto en función de su ID ...
-$id = 1;
-$product = $entityManager->find(Product::class, $id);
-
-if ($product === null) {
-    echo "No product found.\n";
-    exit(1);
-}
-
-echo sprintf("-%s\n", $product->getName());
-```
 ## Ejecución ...
->Abra la terminal y tipeé :
-```console
-cd public
-```
-> Y despues:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
 ```console
 php show_product.php ORM
 ```
->Acontinuación se a creado el archivo `update_product.php` en `./public` y hemos añadido el siguiente codigo:
 
-```php
-<?php
-// TODO: Archivo que actualiza los productos ...
+>El archivo `update_product.php` en `./public` Actualizaremos el nombre de un producto, dado su <Id>:
 
-use App\Models\Product;
-require_once __DIR__ . "/../config/bootstrap.php";
-// *: Actualizaremos el nombre de un producto, dado su <Id> ...
-$id = 1;
-$newName = 'ProductoA';
-
-$product = $entityManager->find(Product::class, $id);
-
-if ($product === null) {
-    echo "Product $id does not exist.\n";
-    exit(1);
-}
-
-$product->setName($newName);
-
-$entityManager->flush();
-// ?:La implementación de Doctrine del patrón UnitOfWork. Doctrine realiza un seguimiento de todas las entidades que se recuperaron del Entity Manager y puede detectar cuándo se ha modificado alguna de las propiedades de esas entidades. Como resultado, en lugar de tener que llamar persist($entity)a cada entidad individual cuyas propiedades se cambiaron, una sola llamada al flush()final de una solicitud es suficiente para actualizar la base de datos de todas las entidades modificadas.
-```
 ## Ejecución ...
->Abra la terminal y tipeé :
-```console
-cd public
-```
-> Y despues:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
 ```console
 php update_product.php ORM
 ```
