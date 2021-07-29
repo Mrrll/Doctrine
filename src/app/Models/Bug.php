@@ -35,9 +35,18 @@ class Bug
     protected $status;
 
     // *: Agregaremos propiedades que almacenarán objetos de tipos de entidad específicos para modelar las relaciones entre diferentes entidades ...
+    /**
+     * @ORM\ManyToMany(targetEntity="Product")
+     */
     protected $products;
     // *:Implementar una referencia bidireccional ...
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="assignedBugs")
+     */
     protected $engineer;
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="reportedBugs")
+     */
     protected $reporter;
     public function __construct()
     {
