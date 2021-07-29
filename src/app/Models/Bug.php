@@ -36,12 +36,34 @@ class Bug
 
     // *: Agregaremos propiedades que almacenarán objetos de tipos de entidad específicos para modelar las relaciones entre diferentes entidades ...
     protected $products;
-
+    // *:Implementar una referencia bidireccional ...
+    protected $engineer;
+    protected $reporter;
     public function __construct()
     {
         $this->products = new ArrayCollection();
     }
+    public function setEngineer(User $engineer)
+    {
+        $engineer->assignedToBug($this);
+        $this->engineer = $engineer;
+    }
 
+    public function setReporter(User $reporter)
+    {
+        $reporter->addReportedBug($this);
+        $this->reporter = $reporter;
+    }
+
+    public function getEngineer()
+    {
+        return $this->engineer;
+    }
+
+    public function getReporter()
+    {
+        return $this->reporter;
+    }
     public function getId()
     {
         return $this->id;
