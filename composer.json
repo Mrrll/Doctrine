@@ -4,7 +4,8 @@
     "type": "project",
     "require": {
         "doctrine/orm": "2.6",
-        "vlucas/phpdotenv": "^5.3"
+        "vlucas/phpdotenv": "^5.3",
+        "symfony/var-dumper": "^5.3"
     },
     "license": "MIT",
     "autoload": {
