@@ -3,7 +3,7 @@
 
 require_once __DIR__ . "/../config/bootstrap.php";
 
-// *: Buscar por clave principal ...
+// *: Cuadro de mando del usuario ...
 
 $theUserId = $argv[1];
 
