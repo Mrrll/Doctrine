@@ -64,6 +64,17 @@ class Bug
     {
         return $this->reporter;
     }
+    // *: Los errores hacen referencia a los productos mediante una relación unidireccional ManyToMany en la base de datos que apunta de errores a productos ...
+
+    public function assignToProduct(Product $product)
+    {
+        $this->products[] = $product;
+    }
+
+    public function getProducts()
+    {
+        return $this->products;
+    }
     public function getId()
     {
         return $this->id;
