@@ -1,5 +1,5 @@
 <?php
-// TODO: Archivo que muestra los productos por <id> ...
+// TODO: Archivo que actualiza los productos ...
 
 use App\Models\Product;
 require_once __DIR__ . "/../config/bootstrap.php";
