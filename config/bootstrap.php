@@ -1,9 +1,8 @@
 <?php
-// TODO: Archivo unico de la app ...
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Dotenv\Dotenv;
-use App\Models\Product;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 Dotenv::createImmutable(__DIR__ . '/../')->load();
 
@@ -32,13 +31,3 @@ $conn = [
 
 // ?: Obteniendo el administrador de la entidad ...
 $entityManager = EntityManager::create($conn, $config);
-
-// *: Creamos la Entidad Productos ...
-$newProductName = "Producto1";
-$product = new Product();
-$product->setName($newProductName);
-// *: Almacenamos los datos ...
-$entityManager->persist($product);
-$entityManager->flush();
-
-echo "Created Product with ID " . $product->getId() . "\n";
