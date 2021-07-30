@@ -7,7 +7,7 @@
        "execution_time_column_name": "execution_time"
     },
     "migrations_paths": {
-       "Database\\Migrations": "./src/database/migrations"
+       "Database\\Migrations": "./src/app/database/migrations"
     },
     "all_or_nothing": true,
     "check_database_platform": true,
