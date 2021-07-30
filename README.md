@@ -150,7 +150,7 @@ Generamos las entidades para relacionar un error, un informador, un ingeniero y 
 
 >El archivo `create_user.php` en `./public` Creamos la Entidad User:
 
->Abra la terminal acceda a la carpeta `cd public` y tipeé :create_user
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
 ```console
 php create_user.php Pedro
 ```
@@ -184,3 +184,27 @@ php close_bug.php 1
 ```
 
 >Pues eso es todo para la v1.2 espero que sirva. 👍
+
+# Ejemplo 3
+## Repositorios de entidades.
+
+**`Nota:`
+Separar la lógica de consulta de Doctrine de su modelo ...**
+
+>Se ha creado el archivo `BugRepository.php` en `./src/app/Repository` Para toda la lógica de consulta DQL especializada en él.:
+ 
+> Para hacer referencia a el: el archivo `Bug.php` en './src/app/Models' se añadido en siguiente codigo:
+ ```php
+ use App\Repository\BugRepository;
+/**
+ * @ORM\Entity(repositoryClass=BugRepository::class)
+ * @ORM\Table(name="bugs")
+ */
+ ```
+ >El archivo `list_bugs_repository.php` en `./public` Lista de errores:
+ 
+ >Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php list_bugs_repository.php
+```
+>Pues eso es todo para la v1.3 espero que sirva. 👍
