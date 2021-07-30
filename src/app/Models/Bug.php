@@ -2,8 +2,9 @@
 namespace App\Models;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\BugRepository;
 /**
- * @ORM\Entity(repositoryClass="BugRepository")
+ * @ORM\Entity(repositoryClass=BugRepository::class)
  * @ORM\Table(name="bugs")
  */
 class Bug
