@@ -193,7 +193,7 @@ Separar la lógica de consulta de Doctrine de su modelo ...**
 
 >Se ha creado el archivo `BugRepository.php` en `./src/app/Repository` Para toda la lógica de consulta DQL especializada en él.:
  
-> Para hacer referencia a el: el archivo `Bug.php` en './src/app/Models' se añadido en siguiente codigo:
+> Para hacer referencia a el. En el archivo `Bug.php` en `./src/app/Models` se añadido en siguiente codigo:
  ```php
  use App\Repository\BugRepository;
 /**
@@ -208,3 +208,100 @@ Separar la lógica de consulta de Doctrine de su modelo ...**
 php list_bugs_repository.php
 ```
 >Pues eso es todo para la v1.3 espero que sirva. 👍
+
+## Doctrine Migrations:
+**`Nota:` Doctrine Migrations es para versionar el esquema de su base de datos.**
+ ### Configuración de migraciones:
+ >Se ha creado el archivo `migrations.json` en la raiz del proyecto `./` Modifique la ruta o el namespace de sus migraciones en siguiente bloque de codigo :
+ ```json
+  "migrations_paths": {
+       "Database\\Migrations": "./src/app/database/migrations"
+    },
+ ```
+ **`Nota:` La ruta indicada en `migrations.json` debe de existir.**
+ 
+ ### Clases de migración:
+ 
+>Abra la terminal y tipeé :
+```console
+./bin/doctrine-migrations generate
+```
+> Generar una migración en blanco, Ejemplo: `Version20210730213047.php`.
+
+ ### Agreguemos código a la migración:
+ 
+ **`Nota:` Podemos agregar `(2 maneras)` para crear el codigo en el archivo `Version20210730213047.php` en `src/app/database/migrations`.**
+ 
+ > Podemos utilizar `Sql` inyectandolo con el metodo `addSql()` de esta manera:
+ 
+ ```php
+ $this->addSql('CREATE TABLE example_table (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
+ ```
+ 
+ > O podemos utilizar con la clase `Schema` de esta manera:
+ 
+```php
+$Table = $schema->createTable("example_table");
+$Table->addColumn("id", "integer", array("unsigned" => true, "autoincrement" => true));
+$Table->addColumn("title", "string", array("length" => 255, "notnull" => false));
+$Table->setPrimaryKey(array("id"));
+```
+
+#### Ejecución de varias migraciones:
+
+>Abra la terminal y tipeé :
+```console
+ ./bin/doctrine-migrations migrate
+```
+
+#### Ejecución de migraciones únicas:
+
+> Ejecutar una única migración hacia arriba o hacia abajo.(--up o --down).
+ 
+>Abra la terminal y tipeé :
+```console
+ ./bin/doctrine-migrations execute Database\Migrations\Version20210730213047 --down
+``` 
+**`Nota:` Si nos fijamos estamos proporcionando el Namespace `Database\Migrations` que hemos registrado en el archivo `migrations.json` mas el nombre del version `Version20210730213047`.**
+
+#### Revertir migraciones:
+
+> Para volver a la primera versión, puede usar el `first` alias de la versión:
+ 
+>Abra la terminal y tipeé :
+```console
+ ./bin/doctrine-migrations migrate first
+``` 
+ 
+#### Alias de versión:
+* `first` - Migre a antes de la primera versión.
+* `prev` - Migrar a una versión anterior a la anterior.
+* `next` - Migre a la siguiente versión.
+* `latest` - Migre a la última versión.
+
+### Administrar la tabla de versiones:
+
+> Marcar manualmente una migración como migrada o no.
+ 
+>Abra la terminal y tipeé para añadir:
+```console
+ ./bin/doctrine-migrations version Database\Migrations\Version20210730213047 --add
+``` 
+> O eliminar esa versión:
+```console
+ ./bin/doctrine-migrations version Database\Migrations\Version20210730213047 --delete
+``` 
+**`Nota:` 	
+Tenga cuidado al utilizar el comando `versión`. Si elimina una versión de la tabla y luego ejecuta el comando `migrate`, esa versión de migración se ejecutará nuevamente.**
+ 
+### Diferenciar usando el ORM:
+ 
+>Si está utilizando el ORM, puede modificar su información de mapeo y hacer que Doctrine genere una migración para usted comparando el estado actual de su esquema de base de datos con la información de mapeo que se define mediante el uso del ORM.
+ 
+>Abra la terminal y tipeé :
+```console
+ ./bin/doctrine-migrations diff
+``` 
+**`Nota:` Esta instrucción compara la base de datos con las Entidades y genera las tablas de cada Entidad `(Entidades o Modelos)` en la ruta que hemos registrado en el archivo `bootstrap.php` en `config/`**
+
+>Pues eso es todo para la v1.4 espero que sirva. 👍
