@@ -14,18 +14,16 @@ final class Version20210730213047 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'This is my example migration.';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-
+        $this->addSql('CREATE TABLE example_table (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-
+        $this->addSql('DROP TABLE example_table');
     }
 }
