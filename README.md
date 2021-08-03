@@ -525,3 +525,183 @@ php create_product.php Producto3
 ```console
 php list_product.php
 ```
+#### Uno a uno, bidireccional
+**`Nota:` Una relación uno a uno entre la Entidad `Customery` a Entidad `Cart`. Las anotaciones `mappedBy` y `inversedBy` Se utilizan para decirle a Doctrine qué propiedad del otro lado se refiere al objeto. `inversedBy` ese es el lado propietario de la relación y, por lo tanto, contiene la clave externa.**
+
+>Creamos el archivo `Customer.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+<?php
+namespace App\Models;
+use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="customers")
+ */
+class Customer
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $id;
+    /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $name;
+    /**
+     * One Customer has One Cart.
+     * @ORM\OneToOne(targetEntity="Cart", mappedBy="customer")
+     */
+    private $cart;
+
+    /**
+     * Get the value of id
+     *
+     * @return  int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the value of address
+     *
+     * @return  string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @param  string  $name
+     *
+     * @return  self
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * Get one Customer has One Cart.
+     */
+    public function Cart()
+    {
+        return $this->cart;
+    }
+
+    /**
+     * Set one Customer has One Cart.
+     *
+     * @return  self
+     */
+    public function setCart($cart)
+    {
+        $this->cart = $cart;
+    }
+}
+```
+>Creamos el archivo `Cart.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+<?php
+namespace App\Models;
+use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="carts")
+ */
+class Cart
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $id;
+    /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $name;
+    /**
+     * One Cart has One Customer.
+     * @ORM\OneToOne(targetEntity="Customer", inversedBy="cart")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     */
+    private $customer;
+
+    /**
+     * Get the value of id
+     *
+     * @return  int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the value of address
+     *
+     * @return  string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @param  string  $name
+     *
+     * @return  self
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
+
+
+    /**
+     * Get one Cart has One Customer.
+     */
+    public function Customer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * Set one Cart has One Customer.
+     *
+     * @return  self
+     */
+    public function setCustomer($customer)
+    {
+        $this->customer = $customer;
+    }
+}
+```
+>Actualizar el esquema de base de datos, Abra la terminal y tipeé :
+```console
+./bin/doctrine orm:schema-tool:update --force
+```
+>El archivo `create_customer.php` en `./public` Creamos el cliente y el carrito :
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php create_customer.php Paco Carrito2
+```
+>El archivo `list_customer.php` en `./public` Lista los clientes y los carritos en ambas direcciones:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php list_customer.php
+```
