@@ -19,8 +19,12 @@ class Product
      */
     protected $name;
 
-    // .. (other code)
-
+    /**
+     * One Product has One Shipment.
+     * @ORM\OneToOne(targetEntity="Shipment")
+     * @ORM\JoinColumn(name="shipment_id", referencedColumnName="id")
+     */
+    private $shipment;
     /**
      * Get the value of id
      */
@@ -45,5 +49,23 @@ class Product
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * Get one Product has One Shipment.
+     */
+    public function Shipment()
+    {
+        return $this->shipment;
+    }
+
+    /**
+     * Set one Product has One Shipment.
+     *
+     * @return  self
+     */
+    public function setShipment(Shipment $shipment)
+    {
+        $this->shipment = $shipment;
     }
 }

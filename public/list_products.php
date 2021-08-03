@@ -8,5 +8,5 @@ $productRepository = $entityManager->getRepository(Product::class); // ?: Puede 
 $products = $productRepository->findAll();
 
 foreach ($products as $product) {
-    echo sprintf("-%s\n", $product->getName());
+    echo ($product->Shipment() !== null) ? "Nombre : " . $product->getName() . " - Envio : " . $product->Shipment()->getDate()->format('Y-m-d H:i'). "\n" : "Nombre : " . $product->getName() . " - Envio : "."\n" ;
 }

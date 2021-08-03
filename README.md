@@ -415,7 +415,7 @@ class Address
 ```console
 php create_address.php NuevaCalle
 ```
-**`Nota:` Se ha agregado la funcion de añadir dirección en `create_user.php` **
+**`Nota:` Se ha agregado la funcion de añadir dirección en `create_user.php`**
 >Abra la terminal acceda a la carpeta `cd public` y tipeé :
 ```console
 php create_user.php Andres NuevaCalle
@@ -423,4 +423,105 @@ php create_user.php Andres NuevaCalle
 >El archivo `list_user.php` en `./public` Lista los usuarios y las direcciónes:
 ```console
 php list_user.php
+```
+#### Uno a uno, unidireccional
+**`Nota:` Asociación uno a uno con una entidad `Product` que hace referencia a una entidad `Shipment`:**
+
+>Abrimos el archivo `Product.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+ /**
+ * One Product has One Shipment.
+ * @ORM\OneToOne(targetEntity="Shipment")
+ * @ORM\JoinColumn(name="shipment_id", referencedColumnName="id")
+ */
+private $shipment;
+public function getShipment()
+{
+    return $this->shipment;
+}
+
+/**
+ * Set one Product has One Shipment.
+ *
+ * @return  self
+ */
+public function Shipment(Shipment $shipment)
+{
+    $this->shipment = $shipment;
+}
+```
+>Creamos el archivo `Shipment.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+<?php
+namespace App\Models;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="shipments")
+ */
+class Shipment
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+    */
+    protected $id;
+    /**
+     * @ORM\Column(type="datetime")
+     * @var DateTime
+     */
+    protected $date;
+
+    /**
+     * Get the value of id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the value of date
+     *
+     * @return  \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set the value of date
+     *
+     * @param  \DateTime  $date
+     *
+     * @return  self
+     */
+    public function setDate(\DateTime $date)
+    {
+        $this->date = $date;
+    }
+}
+```
+>Actualizar el esquema de base de datos, Abra la terminal y tipeé :
+```console
+./bin/doctrine orm:schema-tool:update --force
+```
+>El archivo `create_shipment.php` en `./public` Creamos la fecha del envio :
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php create_shipment.php
+```
+**`Nota:` Se ha agregado la funcion de añadir envio en `create_product.php`**
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php create_product.php Producto3
+```
+**`Nota:` Se ha agregado la lectura del envio en `list_product.php`**
+>El archivo `list_product.php` en `./public` Lista los productos y los envios:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php list_product.php
 ```
