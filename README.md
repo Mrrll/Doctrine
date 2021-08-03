@@ -334,9 +334,9 @@ private $address;
 /**
 * Get the value of address
 */
-public function getAddress()
+public function Address()
 {
-    return $this->address->getAddress();
+    return $this->address;
 }
 
 /**
