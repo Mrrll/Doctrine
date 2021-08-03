@@ -87,6 +87,19 @@ class Product
 **`Nota:`
 Especificar ambos indicadores --force y --dump-sql hará que las declaraciones DDL se ejecuten y luego se impriman en la pantalla..**
 
+>Generar un esquema de base de datos :
+```console
+./bin/doctrine orm:schema-tool:create
+```
+>Eliminar un esquema de base de datos :
+```console
+./bin/doctrine orm:schema-tool:drop --force
+```
+>Actualizar un esquema de base de datos :
+```console
+./bin/doctrine orm:schema-tool:update --force
+```
+
 ## Ejecución ...
 >Abra la terminal y tipeé :
 ```console
