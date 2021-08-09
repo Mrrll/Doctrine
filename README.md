@@ -705,3 +705,127 @@ php create_customer.php Paco Carrito2
 ```console
 php list_customer.php
 ```
+#### Uno a muchos, bidireccional
+**`Nota:` Una asociación de uno a muchos tiene que ser bidireccional, a menos que esté utilizando una tabla de combinación. Esto se debe a que el lado de muchos en una asociación de uno a muchos contiene la clave externa, lo que lo convierte en el lado propietario. Doctrine necesita que se definan los muchos lados para comprender la asociación.**
+>Abrimos el archivo `Product.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+    /**
+     * One product has many features. This is the inverse side.
+     * @ORM\OneToMany(targetEntity="Feature", mappedBy="product")
+     */
+    private $features;
+
+    public function __construct() {
+        $this->features = new ArrayCollection();
+    }
+    /**
+     * Get one product has many features. This is the inverse side.
+     */
+    public function getFeatures()
+    {
+        return $this->features;
+    }
+
+    /**
+     * Set one product has many features. This is the inverse side.
+     *
+     * @return  self
+     */
+    public function addFeatures(Feature $features)
+    {
+        $this->features[] = $features;
+        $features->setProduct($this);
+        return $this;
+    }
+```
+>Creamos el archivo `Feature.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+<?php
+namespace App\Models;
+use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="features")
+ */
+class Feature
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $name;
+    /**
+     * Many features have one product. This is the owning side.
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="features")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     */
+    private $product;
+
+    /**
+     * Get the value of id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the value of name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @return  self
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get many features have one product. This is the owning side.
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * Set many features have one product. This is the owning side.
+     *
+     * @return  self
+     */
+    public function setProduct(Product $product)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+}
+```
+>Actualizar el esquema de base de datos, Abra la terminal y tipeé :
+```console
+./bin/doctrine orm:schema-tool:update --force
+```
+>El archivo `create_feature.php` en `./public` Creamos la característica del producto :
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php create_feature.php 1 Azul
+```
+>El archivo `list_features.php` en `./public` Lista las características del producto:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php list_features.php 1
+```

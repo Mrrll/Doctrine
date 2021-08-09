@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="products")
@@ -25,6 +25,15 @@ class Product
      * @ORM\JoinColumn(name="shipment_id", referencedColumnName="id")
      */
     private $shipment;
+    /**
+     * One product has many features. This is the inverse side.
+     * @ORM\OneToMany(targetEntity="Feature", mappedBy="product")
+     */
+    private $features;
+
+    public function __construct() {
+        $this->features = new ArrayCollection();
+    }
     /**
      * Get the value of id
      */
@@ -67,5 +76,25 @@ class Product
     public function setShipment(Shipment $shipment)
     {
         $this->shipment = $shipment;
+    }
+
+    /**
+     * Get one product has many features. This is the inverse side.
+     */
+    public function getFeatures()
+    {
+        return $this->features;
+    }
+
+    /**
+     * Set one product has many features. This is the inverse side.
+     *
+     * @return  self
+     */
+    public function addFeatures(Feature $features)
+    {
+        $this->features[] = $features;
+        $features->setProduct($this);
+        return $this;
     }
 }
