@@ -829,3 +829,102 @@ php create_feature.php 1 Azul
 ```console
 php list_features.php 1
 ```
+**`Nota:` No se muy bien si la primera vez que intentas acceder a un `ArrayCollection` el array aparece vacio. Si el getter no se devuelve con la funcion `toArray()` importante.**
+#### Uno a muchos, unidireccional con tabla de unión
+**`Nota:` Una asociación unidireccional de uno a varios se puede asignar a través de una tabla de combinación. Una restricción única en una de las columnas de unión impone la cardinalidad de uno a muchos.**
+>Abrimos el archivo `User.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+    /**
+     * Many User have Many Phonenumbers.
+     * @ORM\ManyToMany(targetEntity="Phonenumber")
+     * @ORM\JoinTable(name="users_phonenumbers",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="phonenumber_id", referencedColumnName="id", unique=true)}
+     *      )
+     */
+    private $phonenumbers;
+
+    public function __construct()
+    {
+        $this->phonenumbers = new ArrayCollection();
+    }
+    /**
+     * Get many User have Many Phonenumbers.
+     */
+    public function getPhonenumbers()
+    {
+        return $this->phonenumbers->toArray(); // !: toArray() muy importante ....
+    }
+
+    /**
+     * Set many User have Many Phonenumbers.
+     *
+     * @return  self
+     */
+    public function addPhonenumbers(Phonenumber $phonenumbers)
+    {
+        $this->phonenumbers[] = $phonenumbers;
+        return $this;
+    }
+```
+>Creamos el archivo `Phonenumber.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+<?php
+namespace App\Models;
+use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="phonenumbers")
+ */
+class Phonenumber
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $phone;
+
+    /**
+     * Get the value of id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the value of phone
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set the value of phone
+     *
+     * @return  self
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+}
+```
+>El archivo `create_phonenumber.php` en `./public` Creamos los número de teléfono :
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php create_phonenumber.php 1 6666666666
+```
+>El archivo `list_phonenumber.php` en `./public` Lista de los número de teléfono:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php list_phonenumber.php 1
+```

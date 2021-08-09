@@ -37,11 +37,21 @@ class User
      * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
      */
     private $address;
+    /**
+     * Many User have Many Phonenumbers.
+     * @ORM\ManyToMany(targetEntity="Phonenumber")
+     * @ORM\JoinTable(name="users_phonenumbers",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="phonenumber_id", referencedColumnName="id", unique=true)}
+     *      )
+     */
+    private $phonenumbers;
 
     public function __construct()
     {
         $this->reportedBugs = new ArrayCollection();
         $this->assignedBugs = new ArrayCollection();
+        $this->phonenumbers = new ArrayCollection();
     }
     // *:Implementar una referencia bidireccional ...
 
@@ -85,5 +95,24 @@ class User
     public function setAddress(Address $address)
     {
         $this->address = $address;
+    }
+
+    /**
+     * Get many User have Many Phonenumbers.
+     */
+    public function getPhonenumbers()
+    {
+        return $this->phonenumbers->toArray(); // !: toArray() muy importante ....
+    }
+
+    /**
+     * Set many User have Many Phonenumbers.
+     *
+     * @return  self
+     */
+    public function addPhonenumbers(Phonenumber $phonenumbers)
+    {
+        $this->phonenumbers[] = $phonenumbers;
+        return $this;
     }
 }
