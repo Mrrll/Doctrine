@@ -918,6 +918,10 @@ class Phonenumber
     }
 }
 ```
+>Actualizar el esquema de base de datos, Abra la terminal y tipeé :
+```console
+./bin/doctrine orm:schema-tool:update --force
+```
 >El archivo `create_phonenumber.php` en `./public` Creamos los número de teléfono :
 >Abra la terminal acceda a la carpeta `cd public` y tipeé :
 ```console
@@ -1016,6 +1020,10 @@ class Student
         return $this;
     }
 }
+```
+>Actualizar el esquema de base de datos, Abra la terminal y tipeé :
+```console
+./bin/doctrine orm:schema-tool:update --force
 ```
 >El archivo `create_student.php` en `./public` Creamos el studiate y el mentor autorreferenciado con el mismo :
 >Abra la terminal acceda a la carpeta `cd public` y tipeé :
@@ -1146,6 +1154,10 @@ class Category
         return $this;
     }
 }
+```
+>Actualizar el esquema de base de datos, Abra la terminal y tipeé :
+```console
+./bin/doctrine orm:schema-tool:update --force
 ```
 **`Nota:` Utilizaremos el Repository para separar la logica de las consultas en el archivo `CategoryRepository.php` en `./src/app/Repository/`.**
 >El archivo `create_category.php` en `./public` Creamos la categoria y con la categoria padre:
