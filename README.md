@@ -1170,3 +1170,113 @@ php create_category.php Padre1 Hijo1
 ```console
 php list_category.php
 ```
+#### Muchos a muchos, unidireccional
+**`Nota:` Asociación unidireccional entre entidades de usuario y grupo.**
+>Abrimos el archivo `User.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+    /**
+     * Many Users have Many Groups.
+     * @ORM\ManyToMany(targetEntity="Group")
+     * @ORM\JoinTable(name="users_groups",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
+     *      )
+     */
+    private $groups;
+    public function __construct()
+    {
+    $this->groups = new ArrayCollection();
+    }
+    /**
+     * Get many Users have Many Groups.
+     */
+    public function getGroups()
+    {
+        return $this->groups->toArray();
+    }
+
+    /**
+     * Set many Users have Many Groups.
+     *
+     * @return  self
+     */
+    public function addGroups(Group $groups)
+    {
+        $this->groups->add($groups);
+        return $this;
+    }
+```
+>Creamos el archivo `Group.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+<?php
+namespace App\Models;
+use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="groups")
+ */
+class Group
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $id;
+    /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * Get the value of id
+     *
+     * @return  int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the value of name
+     *
+     * @return  string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @param  string  $name
+     *
+     * @return  self
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+}
+```
+>Actualizar el esquema de base de datos, Abra la terminal y tipeé :
+```console
+./bin/doctrine orm:schema-tool:update --force
+```
+**`Nota:` Si el nombre del grupo ya esta registrado se añadira el usuario al grupo creado.**
+>El archivo `create_group.php` en `./public` Creamos el grupo y añadimos el usuario al grupo:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php create_group.php Grupo1 1
+```
+>El archivo `list_group.php` en `./public` Lista de usuarios del grupo:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php list_group.php Grupo1
+```

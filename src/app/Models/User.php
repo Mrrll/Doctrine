@@ -46,12 +46,22 @@ class User
      *      )
      */
     private $phonenumbers;
+    /**
+     * Many Users have Many Groups.
+     * @ORM\ManyToMany(targetEntity="Group")
+     * @ORM\JoinTable(name="users_groups",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
+     *      )
+     */
+    private $groups;
 
     public function __construct()
     {
         $this->reportedBugs = new ArrayCollection();
         $this->assignedBugs = new ArrayCollection();
         $this->phonenumbers = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
     // *:Implementar una referencia bidireccional ...
 
@@ -113,6 +123,25 @@ class User
     public function addPhonenumbers(Phonenumber $phonenumbers)
     {
         $this->phonenumbers[] = $phonenumbers;
+        return $this;
+    }
+
+    /**
+     * Get many Users have Many Groups.
+     */
+    public function getGroups()
+    {
+        return $this->groups->toArray();
+    }
+
+    /**
+     * Set many Users have Many Groups.
+     *
+     * @return  self
+     */
+    public function addGroups(Group $groups)
+    {
+        $this->groups->add($groups);
         return $this;
     }
 }
