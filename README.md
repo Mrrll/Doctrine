@@ -1475,3 +1475,81 @@ php create_article.php Animales Pajaros
 ```console
 php list_article.php Animales
 ```
+#### Muchos a muchos, autorreferencia
+**`Nota:` Un escenario común es donde a `User` tiene `amigos` y la entidad objetivo de esa relación es a, `User` por lo que se hace referencia a sí misma. En este ejemplo, es bidireccional, por lo que Usertiene un campo llamado `$friendsWithMe` y `$myFriends`.**
+>Abrimos el archivo `User.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+    /**
+     * Many Users have Many Users.
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="myFriends")
+     */
+    private $friendsWithMe;
+
+    /**
+     * Many Users have many Users.
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="friendsWithMe")
+     * @ORM\JoinTable(name="friends",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="friend_user_id", referencedColumnName="id")}
+     *      )
+     */
+    private $myFriends;
+    public function __construct()
+    {
+        $this->myFriends = new ArrayCollection();
+    }
+    /**
+     * Get many Users have Many Users.
+     */
+    public function getFriendsWithMe()
+    {
+        return $this->friendsWithMe->toArray();
+    }
+
+    /**
+     * Set many Users have Many Users.
+     *
+     * @return  self
+     */
+    public function addFriendsWithMe(User $friendsWithMe)
+    {
+        $this->friendsWithMe->add($friendsWithMe);
+
+        return $this;
+    }
+
+    /**
+     * Get many Users have many Users.
+     */
+    public function getMyFriends()
+    {
+        return $this->myFriends->toArray();
+    }
+
+    /**
+     * Set many Users have many Users.
+     *
+     * @return  self
+     */
+    public function addMyFriends(User $myFriends)
+    {
+        $myFriends->addFriendsWithMe($this);
+        $this->myFriends->add($myFriends);
+        return $this;
+    }
+```
+>Actualizar el esquema de base de datos, Abra la terminal y tipeé :
+```console
+./bin/doctrine orm:schema-tool:update --force
+```
+**`Nota:` Si el nombre del Usuario ya esta registrado se añadira el amigo al usuario creado igual que con el amigo se ralizara la relacion de los dos usuarios.**
+>El archivo `create_friend.php` en `./public` Creamos el Articulo y añadimos la etiqueta:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php create_friends.php Pedro Pablo
+```
+>El archivo `list_friends.php` en `./public` Lista de amigos del usuario:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php list_friends.php Pedro
+```

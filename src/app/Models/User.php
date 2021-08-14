@@ -56,12 +56,30 @@ class User
      */
     private $groups;
 
+    /**
+     * Many Users have Many Users.
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="myFriends")
+     */
+    private $friendsWithMe;
+
+    /**
+     * Many Users have many Users.
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="friendsWithMe")
+     * @ORM\JoinTable(name="friends",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="friend_user_id", referencedColumnName="id")}
+     *      )
+     */
+    private $myFriends;
+
     public function __construct()
     {
         $this->reportedBugs = new ArrayCollection();
         $this->assignedBugs = new ArrayCollection();
         $this->phonenumbers = new ArrayCollection();
         $this->groups = new ArrayCollection();
+        $this->friendsWithMe = new ArrayCollection();
+        $this->myFriends = new ArrayCollection();
     }
     // *:Implementar una referencia bidireccional ...
 
@@ -142,6 +160,46 @@ class User
     public function addGroups(Group $groups)
     {
         $this->groups->add($groups);
+        return $this;
+    }
+
+    /**
+     * Get many Users have Many Users.
+     */
+    public function getFriendsWithMe()
+    {
+        return $this->friendsWithMe->toArray();
+    }
+
+    /**
+     * Set many Users have Many Users.
+     *
+     * @return  self
+     */
+    public function addFriendsWithMe(User $friendsWithMe)
+    {
+        $this->friendsWithMe->add($friendsWithMe);
+
+        return $this;
+    }
+
+    /**
+     * Get many Users have many Users.
+     */
+    public function getMyFriends()
+    {
+        return $this->myFriends->toArray();
+    }
+
+    /**
+     * Set many Users have many Users.
+     *
+     * @return  self
+     */
+    public function addMyFriends(User $myFriends)
+    {
+        $myFriends->addFriendsWithMe($this);
+        $this->myFriends->add($myFriends);
         return $this;
     }
 }
