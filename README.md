@@ -1280,3 +1280,198 @@ php create_group.php Grupo1 1
 ```console
 php list_group.php Grupo1
 ```
+#### Muchos a muchos, bidireccional
+**`Nota:` Para las asociaciones Many-To-Many, puede elegir qué entidad es la propietaria y cuál el lado inverso. Existe una regla semántica muy simple para decidir qué lado es más adecuado para ser el propietario desde la perspectiva de los desarrolladores. Solo tiene que preguntarse qué entidad es responsable de la gestión de la conexión y elegir eso como propietario.**
+>Creamos el archivo `Article.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+<?php
+namespace App\Models;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="articles")
+ */
+class Article
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $id;
+    /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $name;
+    /**
+     * Many Articles have Many Tags.
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles")
+     * @ORM\JoinTable(name="articles_tags")
+     */
+    private $tags;
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
+
+    /**
+     * Get the value of id
+     *
+     * @return  int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the value of name
+     *
+     * @return  string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @param  string  $name
+     *
+     * @return  self
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get many Articles have Many Tags.
+     */
+    public function getTags()
+    {
+        return $this->tags->toArray();
+    }
+
+    /**
+     * Set many Articles have Many Tags.
+     *
+     * @return  self
+     */
+    public function addTags(Tag $tags)
+    {
+        $tags->addArticles($this); // synchronously updating inverse side
+        $this->tags[] = $tags;
+        return $this;
+    }
+}
+```
+>Creamos el archivo `Tag.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+<?php
+namespace App\Models;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="tags")
+ */
+class Tag
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $id;
+    /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $name;
+    /**
+     * Many Tags have Many Articles.
+     * @ORM\ManyToMany(targetEntity="Article", mappedBy="tags")
+     */
+    private $articles;
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
+
+    /**
+     * Get the value of id
+     *
+     * @return  int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the value of name
+     *
+     * @return  string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @param  string  $name
+     *
+     * @return  self
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get many Tags have Many Articles.
+     */
+    public function getArticles()
+    {
+        return $this->articles->toArray();
+    }
+
+    /**
+     * Set many Tags have Many Articles.
+     *
+     * @return  self
+     */
+    public function addArticles(Article $articles)
+    {
+        $this->articles[] = $articles;
+        return $this;
+    }
+}
+```
+>Actualizar el esquema de base de datos, Abra la terminal y tipeé :
+```console
+./bin/doctrine orm:schema-tool:update --force
+```
+**`Nota:` Si el nombre del Articulo ya esta registrado se añadira la etiqueta al articulo creado.**
+>El archivo `create_article.php` en `./public` Creamos el Articulo y añadimos la etiqueta:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php create_article.php Animales Pajaros
+```
+>El archivo `list_article.php` en `./public` Lista de usuarios del grupo:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php list_article.php Animales
+```
