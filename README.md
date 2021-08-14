@@ -1707,3 +1707,122 @@ php create_entitysubclass.php Nueva
 ```console
 php list_entitysubclass.php Nueva
 ```
+#### Herencia de tabla única
+**`Nota:` La herencia de tabla única es una estrategia de asignación de herencia en la que todas las clases de una jerarquía se asignan a una sola tabla de base de dato.**
+>Creamos el archivo `Person.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+<?php
+namespace App\Models;
+use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"person" = "Person", "employee" = "Employee"})
+ */
+class Person
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $id;
+    /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $name;
+    /**
+     * Get the value of id
+     *
+     * @return  int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the value of name
+     *
+     * @return  string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @param  string  $name
+     *
+     * @return  self
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+}
+```
+>Creamos el archivo `Employee.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+<?php
+namespace App\Models;
+use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity
+ */
+class Employee extends Person
+{
+    /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $job;
+    /**
+     * Get the value of job
+     *
+     * @return  string
+     */
+    public function getJob()
+    {
+        return $this->job;
+    }
+    /**
+     * Set the value of job
+     *
+     * @param  string  $job
+     *
+     * @return  self
+     */
+    public function setJob(string $job)
+    {
+        $this->job = $job;
+
+        return $this;
+    }
+}
+```
+>Actualizar el esquema de base de datos, Abra la terminal y tipeé :
+```console
+./bin/doctrine orm:schema-tool:update --force
+```
+>El archivo `create_employee.php` en `./public` Creamos el Empleado :
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php create_employee.php Romero Bombero
+```
+**`Nota:` Tambien podemos crear la entidad Personas de la siguiente manera.**
+```console
+php create_employee.php Romero
+```
+>El archivo `list_employee.php` en `./public` Lista todas la personas:
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php list_employee.php
+```
