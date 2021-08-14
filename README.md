@@ -1826,3 +1826,128 @@ php create_employee.php Romero
 ```console
 php list_employee.php
 ```
+#### Herencia de la tabla de clases
+**`Nota:` La herencia de tabla de clases es una estrategia de asignación de herencia en la que cada clase en una jerarquía se asigna a varias tablas: su propia tabla y las tablas de todas las clases principales.**
+>Creamos el archivo `People.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+<?php
+namespace App\Models;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"people" = "People", "player" = "Player"})
+ */
+class People
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $id;
+    /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $name;
+    /**
+     * Get the value of id
+     *
+     * @return  int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the value of name
+     *
+     * @return  string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @param  string  $name
+     *
+     * @return  self
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+}
+```
+>Creamos el archivo `Player.php` en `src/app/Models` y añadimos el siguiente codigo:
+```php
+<?php
+namespace App\Models;
+use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity
+ */
+class Player extends People
+{
+    /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $player;
+
+
+    /**
+     * Get the value of player
+     *
+     * @return  string
+     */
+    public function getPlayer()
+    {
+        return $this->player;
+    }
+
+    /**
+     * Set the value of player
+     *
+     * @param  string  $player
+     *
+     * @return  self
+     */
+    public function setPlayer(string $player)
+    {
+        $this->player = $player;
+
+        return $this;
+    }
+}
+```
+>Actualizar el esquema de base de datos, Abra la terminal y tipeé :
+```console
+./bin/doctrine orm:schema-tool:update --force
+```
+>El archivo `create_people.php` en `./public` Creamos la gente y luego el juego :
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php create_people.php Jesus Futbol
+```
+**`Nota:` Tambien podemos crear la entidad Gente de la siguiente manera.**
+```console
+php create_people.php Francisco
+```
+>El archivo `list_people.php` en `./public` Lista todas las gentes :
+>Abra la terminal acceda a la carpeta `cd public` y tipeé :
+```console
+php list_people.php
+```
+
+>Pues eso es todo para la v1.5 espero que sirva. 👍
