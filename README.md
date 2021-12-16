@@ -25,7 +25,27 @@ La base de datos debe estar con el motor InnoDB y no debe contener ninguna tabla
 
 # Uso
 ## Doctrine ORM:
+## Índice de contenidos
 
+- [Creando una nueva Entidad](#item1)
+- [Trabajando con la BD orm:schema-tool](#item2)
+- [Doctrine Migrations](#item3)
+- [Mapeo de asociaciones]
+- [Muchos a uno, unidireccional](#item4)
+- [Uno a uno, unidireccional](#item5)
+- [Uno a uno, bidireccional](#item6)
+- [Uno a muchos, bidireccional](#item7)
+- [Uno a muchos, unidireccional con tabla de unión](#item8)
+- [Uno a uno, autorreferencia](#item9)
+- [Uno a muchos, autorreferencia](#item10)
+- [Muchos a muchos, unidireccional](#item11)
+- [Muchos a muchos, bidireccional](#item12)
+- [Muchos a muchos, autorreferencia](#item13)
+- [Mapeo de herencia]
+- [Superclases mapeadas](#item14)
+- [Herencia de tabla única](#item15)
+- [Herencia de la tabla de clases](#item16)
+<a name="item1"></a>
 ### Entidad:
 >Creamos el archivo <code>Product.php</code> en <code>./src/app/Models/</code> y añadimos el siguiente codigo.
 ```php
@@ -83,7 +103,7 @@ class Product
 ```console
 ./bin/doctrine orm:schema-tool:update --force --dump-sql
 ```
-
+<a name="item2"></a>
 **`Nota:`
 Especificar ambos indicadores --force y --dump-sql hará que las declaraciones DDL se ejecuten y luego se impriman en la pantalla..**
 
@@ -221,7 +241,7 @@ Separar la lógica de consulta de Doctrine de su modelo ...**
 php list_bugs_repository.php
 ```
 >Pues eso es todo para la v1.3 espero que sirva. 👍
-
+<a name="item3"></a>
 ## Doctrine Migrations:
 **`Nota:` Doctrine Migrations es para versionar el esquema de su base de datos.**
  ### Configuración de migraciones:
@@ -318,7 +338,7 @@ Tenga cuidado al utilizar el comando `versión`. Si elimina una versión de la t
 **`Nota:` Esta instrucción compara la base de datos con las Entidades y genera las tablas de cada Entidad `(Entidades o Modelos)` en la ruta que hemos registrado en el archivo `bootstrap.php` en `config/`**
 
 >Pues eso es todo para la v1.4 espero que sirva. 👍
-
+<a name="item4"></a>
 ## Doctrine ORM
 ### Mapeo de asociaciones ...
 #### Muchos a uno, unidireccional
@@ -424,6 +444,8 @@ php create_user.php Andres NuevaCalle
 ```console
 php list_user.php
 ```
+
+<a name="item5"></a>
 #### Uno a uno, unidireccional
 **`Nota:` Asociación uno a uno con una entidad `Product` que hace referencia a una entidad `Shipment`:**
 
@@ -525,6 +547,7 @@ php create_product.php Producto3
 ```console
 php list_product.php
 ```
+<a name="item6"></a>
 #### Uno a uno, bidireccional
 **`Nota:` Una relación uno a uno entre la Entidad `Customery` a Entidad `Cart`. Las anotaciones `mappedBy` y `inversedBy` Se utilizan para decirle a Doctrine qué propiedad del otro lado se refiere al objeto. `inversedBy` ese es el lado propietario de la relación y, por lo tanto, contiene la clave externa.**
 
@@ -705,6 +728,7 @@ php create_customer.php Paco Carrito2
 ```console
 php list_customer.php
 ```
+<a name="item7"></a>
 #### Uno a muchos, bidireccional
 **`Nota:` Una asociación de uno a muchos tiene que ser bidireccional, a menos que esté utilizando una tabla de combinación. Esto se debe a que el lado de muchos en una asociación de uno a muchos contiene la clave externa, lo que lo convierte en el lado propietario. Doctrine necesita que se definan los muchos lados para comprender la asociación.**
 >Abrimos el archivo `Product.php` en `src/app/Models` y añadimos el siguiente codigo:
@@ -830,6 +854,7 @@ php create_feature.php 1 Azul
 php list_features.php 1
 ```
 **`Nota:` No se muy bien si la primera vez que intentas acceder a un `ArrayCollection` el array aparece vacio. Si el getter no se devuelve con la funcion `toArray()` importante.**
+<a name="item8"></a>
 #### Uno a muchos, unidireccional con tabla de unión
 **`Nota:` Una asociación unidireccional de uno a varios se puede asignar a través de una tabla de combinación. Una restricción única en una de las columnas de unión impone la cardinalidad de uno a muchos.**
 >Abrimos el archivo `User.php` en `src/app/Models` y añadimos el siguiente codigo:
@@ -932,6 +957,7 @@ php create_phonenumber.php 1 6666666666
 ```console
 php list_phonenumber.php 1
 ```
+<a name="item9"></a>
 #### Uno a uno, autorreferencia
 **`Nota:` Puede definir una relación uno a uno autorreferencial.**
 >Creamos el archivo `Student.php` en `src/app/Models` y añadimos el siguiente codigo:
@@ -1035,6 +1061,7 @@ php create_student.php Juan
 ```console
 php list_student.php 1
 ```
+<a name="item10"></a>
 #### Uno a muchos, autorreferencia
 **`Nota:` Esto modela efectivamente una jerarquía de categorías y, desde la perspectiva de la base de datos, se conoce como enfoque de lista de adyacencia.**
 >Creamos el archivo `Category.php` en `src/app/Models` y añadimos el siguiente codigo:
@@ -1170,6 +1197,7 @@ php create_category.php Padre1 Hijo1
 ```console
 php list_category.php
 ```
+<a name="item11"></a>
 #### Muchos a muchos, unidireccional
 **`Nota:` Asociación unidireccional entre entidades de usuario y grupo.**
 >Abrimos el archivo `User.php` en `src/app/Models` y añadimos el siguiente codigo:
@@ -1280,6 +1308,7 @@ php create_group.php Grupo1 1
 ```console
 php list_group.php Grupo1
 ```
+<a name="item12"></a>
 #### Muchos a muchos, bidireccional
 **`Nota:` Para las asociaciones Many-To-Many, puede elegir qué entidad es la propietaria y cuál el lado inverso. Existe una regla semántica muy simple para decidir qué lado es más adecuado para ser el propietario desde la perspectiva de los desarrolladores. Solo tiene que preguntarse qué entidad es responsable de la gestión de la conexión y elegir eso como propietario.**
 >Creamos el archivo `Article.php` en `src/app/Models` y añadimos el siguiente codigo:
@@ -1475,6 +1504,7 @@ php create_article.php Animales Pajaros
 ```console
 php list_article.php Animales
 ```
+<a name="item13"></a>
 #### Muchos a muchos, autorreferencia
 **`Nota:` Un escenario común es donde a `User` tiene `amigos` y la entidad objetivo de esa relación es a, `User` por lo que se hace referencia a sí misma. En este ejemplo, es bidireccional, por lo que Usertiene un campo llamado `$friendsWithMe` y `$myFriends`.**
 >Abrimos el archivo `User.php` en `src/app/Models` y añadimos el siguiente codigo:
@@ -1553,6 +1583,7 @@ php create_friends.php Pedro Pablo
 ```console
 php list_friends.php Pedro
 ```
+<a name="item14"></a>
 ### Mapeo de herencia
 #### Superclases mapeadas
 **`Nota:` Una superclase mapeada es una clase abstracta o concreta que proporciona información de mapeo y estado de entidad persistente para sus subclases, pero que no es en sí misma una entidad.**
@@ -1707,6 +1738,7 @@ php create_entitysubclass.php Nueva
 ```console
 php list_entitysubclass.php Nueva
 ```
+<a name="item15"></a>
 #### Herencia de tabla única
 **`Nota:` La herencia de tabla única es una estrategia de asignación de herencia en la que todas las clases de una jerarquía se asignan a una sola tabla de base de dato.**
 >Creamos el archivo `Person.php` en `src/app/Models` y añadimos el siguiente codigo:
@@ -1826,6 +1858,7 @@ php create_employee.php Romero
 ```console
 php list_employee.php
 ```
+<a name="item16"></a>
 #### Herencia de la tabla de clases
 **`Nota:` La herencia de tabla de clases es una estrategia de asignación de herencia en la que cada clase en una jerarquía se asigna a varias tablas: su propia tabla y las tablas de todas las clases principales.**
 >Creamos el archivo `People.php` en `src/app/Models` y añadimos el siguiente codigo:
