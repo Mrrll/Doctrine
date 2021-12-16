@@ -22,7 +22,7 @@ Rellenamos los datos de configuración.
 
 **`Nota:`
 La base de datos debe estar con el motor InnoDB y no debe contener ninguna tabla.**
-
+<a name="top"></a>
 # Uso
 ## Doctrine ORM:
 ## Índice de contenidos
@@ -130,7 +130,7 @@ Ejecuta para almacenar el nuevo producto ...**
 
 >Pues eso es todo para la v1.0 espero que sirva. 👍
 
-
+[Subir](#top)
 
 
 ## Cambios para siguiente versión v1.1 ...
@@ -174,7 +174,8 @@ php show_product.php ORM
 ```
 >Pues eso es todo para la v1.1 espero que sirva. 👍
 
-
+[Subir](#top)
+ 
 # Ejemplo 2
 ## Implementando más requisitos.
 
@@ -217,7 +218,8 @@ php close_bug.php 1
 ```
 
 >Pues eso es todo para la v1.2 espero que sirva. 👍
-
+[Subir](#top)
+ 
 # Ejemplo 3
 ## Repositorios de entidades.
 
@@ -241,6 +243,7 @@ Separar la lógica de consulta de Doctrine de su modelo ...**
 php list_bugs_repository.php
 ```
 >Pues eso es todo para la v1.3 espero que sirva. 👍
+ [Subir](#top)
 <a name="item3"></a>
 ## Doctrine Migrations:
 **`Nota:` Doctrine Migrations es para versionar el esquema de su base de datos.**
@@ -338,6 +341,7 @@ Tenga cuidado al utilizar el comando `versión`. Si elimina una versión de la t
 **`Nota:` Esta instrucción compara la base de datos con las Entidades y genera las tablas de cada Entidad `(Entidades o Modelos)` en la ruta que hemos registrado en el archivo `bootstrap.php` en `config/`**
 
 >Pues eso es todo para la v1.4 espero que sirva. 👍
+ [Subir](#top)
 <a name="item4"></a>
 ## Doctrine ORM
 ### Mapeo de asociaciones ...
@@ -444,7 +448,7 @@ php create_user.php Andres NuevaCalle
 ```console
 php list_user.php
 ```
-
+[Subir](#top)
 <a name="item5"></a>
 #### Uno a uno, unidireccional
 **`Nota:` Asociación uno a uno con una entidad `Product` que hace referencia a una entidad `Shipment`:**
@@ -547,6 +551,7 @@ php create_product.php Producto3
 ```console
 php list_product.php
 ```
+[Subir](#top)
 <a name="item6"></a>
 #### Uno a uno, bidireccional
 **`Nota:` Una relación uno a uno entre la Entidad `Customery` a Entidad `Cart`. Las anotaciones `mappedBy` y `inversedBy` Se utilizan para decirle a Doctrine qué propiedad del otro lado se refiere al objeto. `inversedBy` ese es el lado propietario de la relación y, por lo tanto, contiene la clave externa.**
@@ -728,6 +733,7 @@ php create_customer.php Paco Carrito2
 ```console
 php list_customer.php
 ```
+[Subir](#top)
 <a name="item7"></a>
 #### Uno a muchos, bidireccional
 **`Nota:` Una asociación de uno a muchos tiene que ser bidireccional, a menos que esté utilizando una tabla de combinación. Esto se debe a que el lado de muchos en una asociación de uno a muchos contiene la clave externa, lo que lo convierte en el lado propietario. Doctrine necesita que se definan los muchos lados para comprender la asociación.**
@@ -854,6 +860,7 @@ php create_feature.php 1 Azul
 php list_features.php 1
 ```
 **`Nota:` No se muy bien si la primera vez que intentas acceder a un `ArrayCollection` el array aparece vacio. Si el getter no se devuelve con la funcion `toArray()` importante.**
+[Subir](#top)
 <a name="item8"></a>
 #### Uno a muchos, unidireccional con tabla de unión
 **`Nota:` Una asociación unidireccional de uno a varios se puede asignar a través de una tabla de combinación. Una restricción única en una de las columnas de unión impone la cardinalidad de uno a muchos.**
@@ -957,6 +964,7 @@ php create_phonenumber.php 1 6666666666
 ```console
 php list_phonenumber.php 1
 ```
+[Subir](#top)
 <a name="item9"></a>
 #### Uno a uno, autorreferencia
 **`Nota:` Puede definir una relación uno a uno autorreferencial.**
@@ -1061,6 +1069,7 @@ php create_student.php Juan
 ```console
 php list_student.php 1
 ```
+[Subir](#top)
 <a name="item10"></a>
 #### Uno a muchos, autorreferencia
 **`Nota:` Esto modela efectivamente una jerarquía de categorías y, desde la perspectiva de la base de datos, se conoce como enfoque de lista de adyacencia.**
@@ -1197,6 +1206,7 @@ php create_category.php Padre1 Hijo1
 ```console
 php list_category.php
 ```
+[Subir](#top)
 <a name="item11"></a>
 #### Muchos a muchos, unidireccional
 **`Nota:` Asociación unidireccional entre entidades de usuario y grupo.**
@@ -1308,6 +1318,7 @@ php create_group.php Grupo1 1
 ```console
 php list_group.php Grupo1
 ```
+[Subir](#top)
 <a name="item12"></a>
 #### Muchos a muchos, bidireccional
 **`Nota:` Para las asociaciones Many-To-Many, puede elegir qué entidad es la propietaria y cuál el lado inverso. Existe una regla semántica muy simple para decidir qué lado es más adecuado para ser el propietario desde la perspectiva de los desarrolladores. Solo tiene que preguntarse qué entidad es responsable de la gestión de la conexión y elegir eso como propietario.**
@@ -1504,6 +1515,7 @@ php create_article.php Animales Pajaros
 ```console
 php list_article.php Animales
 ```
+[Subir](#top)
 <a name="item13"></a>
 #### Muchos a muchos, autorreferencia
 **`Nota:` Un escenario común es donde a `User` tiene `amigos` y la entidad objetivo de esa relación es a, `User` por lo que se hace referencia a sí misma. En este ejemplo, es bidireccional, por lo que Usertiene un campo llamado `$friendsWithMe` y `$myFriends`.**
@@ -1583,6 +1595,7 @@ php create_friends.php Pedro Pablo
 ```console
 php list_friends.php Pedro
 ```
+[Subir](#top)
 <a name="item14"></a>
 ### Mapeo de herencia
 #### Superclases mapeadas
@@ -1738,6 +1751,7 @@ php create_entitysubclass.php Nueva
 ```console
 php list_entitysubclass.php Nueva
 ```
+[Subir](#top)
 <a name="item15"></a>
 #### Herencia de tabla única
 **`Nota:` La herencia de tabla única es una estrategia de asignación de herencia en la que todas las clases de una jerarquía se asignan a una sola tabla de base de dato.**
@@ -1858,6 +1872,7 @@ php create_employee.php Romero
 ```console
 php list_employee.php
 ```
+[Subir](#top)
 <a name="item16"></a>
 #### Herencia de la tabla de clases
 **`Nota:` La herencia de tabla de clases es una estrategia de asignación de herencia en la que cada clase en una jerarquía se asigna a varias tablas: su propia tabla y las tablas de todas las clases principales.**
@@ -1984,3 +1999,4 @@ php list_people.php
 ```
 
 >Pues eso es todo para la v1.5 espero que sirva. 👍
+[Subir](#top)
